@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 年度总结 | Your Wrapped</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            overflow: hidden;
+            background: #121212;
+        }
+
+        .slide-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: all;
+        }
+
+        .slide.exit-up {
+            opacity: 0;
+            transform: translateY(-100%) scale(0.8);
+        }
+
+        .slide.exit-down {
+            opacity: 0;
+            transform: translateY(100%) scale(0.8);
+        }
+
+        /* Gradient backgrounds like Spotify with background images */
+        .gradient-1 { 
+            background: linear-gradient(135deg, rgba(29, 40, 50, 0.92) 0%, rgba(15, 25, 35, 0.95) 100%),
+                        url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920') center/cover;
+        }
+        .gradient-2 { 
+            background: linear-gradient(135deg, rgba(30, 45, 60, 0.9) 0%, rgba(20, 35, 50, 0.92) 100%),
+                        url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920') center/cover;
+        }
+        .gradient-3 { 
+            background: linear-gradient(135deg, rgba(35, 45, 65, 0.9) 0%, rgba(25, 35, 55, 0.92) 100%),
+                        url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1920') center/cover;
+        }
+        .gradient-4 { 
+            background: linear-gradient(135deg, rgba(40, 50, 70, 0.9) 0%, rgba(30, 40, 60, 0.92) 100%),
+                        url('https://images.unsplash.com/photo-1483058712412-4245e9b90334?w=1920') center/cover;
+        }
+        .gradient-5 { 
+            background: linear-gradient(135deg, rgba(25, 45, 65, 0.88) 0%, rgba(20, 40, 55, 0.9) 100%),
+                        url('https://images.unsplash.com/photo-1571008887538-b36bb32f4571?w=1920') center/cover;
+        }
+        .gradient-6 { 
+            background: linear-gradient(135deg, rgba(30, 50, 60, 0.88) 0%, rgba(25, 45, 55, 0.9) 100%),
+                        url('https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1920') center/cover;
+        }
+        .gradient-7 { 
+            background: linear-gradient(135deg, rgba(45, 55, 75, 0.9) 0%, rgba(35, 45, 65, 0.92) 100%),
+                        url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920') center/cover;
+        }
+        .gradient-8 { 
+            background: linear-gradient(135deg, rgba(40, 55, 70, 0.9) 0%, rgba(30, 45, 60, 0.92) 100%),
+                        url('https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=1920') center/cover;
+        }
+        .gradient-9 { 
+            background: linear-gradient(135deg, rgba(35, 50, 65, 0.85) 0%, rgba(25, 40, 55, 0.88) 100%),
+                        url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1920') center/cover;
+        }
+        .gradient-10 { 
+            background: linear-gradient(135deg, rgba(40, 45, 65, 0.9) 0%, rgba(30, 35, 55, 0.92) 100%),
+                        url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=1920') center/cover;
+        }
+        .gradient-11 { 
+            background: linear-gradient(135deg, rgba(35, 50, 60, 0.9) 0%, rgba(25, 40, 50, 0.92) 100%),
+                        url('https://images.unsplash.com/photo-1489549132488-d00b7eee80f1?w=1920') center/cover;
+        }
+        .gradient-12 { 
+            background: linear-gradient(135deg, rgba(30, 45, 55, 0.85) 0%, rgba(20, 35, 45, 0.88) 100%),
+                        url('https://images.unsplash.com/photo-1464802686167-b939a6910659?w=1920') center/cover;
+        }
+
+        .content-wrapper {
+            max-width: 600px;
+            text-align: center;
+            color: white;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            font-size: 0.875rem;
+            opacity: 0.7;
+            color: white;
+        }
+
+        .year-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .main-title {
+            font-size: clamp(2rem, 8vw, 4rem);
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 20px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            font-weight: 300;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .highlight-text {
+            font-size: clamp(3rem, 15vw, 8rem);
+            font-weight: 900;
+            background: linear-gradient(90deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 1rem 0;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .keyword-tag {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            margin: 0.5rem;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .keyword-tag:hover {
+            transform: scale(1.1);
+        }
+
+        .emoji-large {
+            font-size: clamp(4rem, 20vw, 10rem);
+            margin-bottom: 1rem;
+        }
+
+        /* Progress bar */
+        .progress-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            z-index: 100;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: white;
+            transition: width 0.3s ease;
+        }
+
+        /* Navigation dots */
+        .nav-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: white;
+            transform: scale(1.3);
+        }
+
+        .nav-dot:hover {
+            background: rgba(255,255,255,0.7);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .slide.active .animate-fade-up {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .slide.active .animate-fade-up-delay-1 {
+            animation: fadeInUp 0.8s ease 0.2s forwards;
+            opacity: 0;
+        }
+
+        .slide.active .animate-fade-up-delay-2 {
+            animation: fadeInUp 0.8s ease 0.4s forwards;
+            opacity: 0;
+        }
+
+        .slide.active .animate-fade-up-delay-3 {
+            animation: fadeInUp 0.8s ease 0.6s forwards;
+            opacity: 0;
+        }
+
+        .slide.active .animate-scale {
+            animation: fadeInScale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .slide.active .animate-pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .slide.active .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Swipe hint */
+        .swipe-hint {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            opacity: 0.7;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 100;
+        }
+
+        .swipe-hint svg {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Suggestion cards */
+        .suggestion-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 0.75rem 0;
+            border: 1px solid rgba(255,255,255,0.15);
+            text-align: left;
+        }
+
+        .suggestion-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .suggestion-card p {
+            font-size: 0.875rem;
+            opacity: 0.85;
+            line-height: 1.5;
+        }
+
+        /* Keep text white on all slides */
+        .dark-text {
+            color: #ffffff !important;
+        }
+
+        .dark-text .year-badge {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .dark-text .keyword-tag {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .dark-text .stat-card {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .nav-dots {
+                right: 0.75rem;
+                gap: 0.5rem;
+            }
+
+            .nav-dot {
+                width: 8px;
+                height: 8px;
+            }
+            
+            .slide {
+                padding: 1.25rem;
+                padding-top: 3.5rem;
+            }
+
+            .slide-number {
+                top: 1rem;
+                left: 1rem;
+                font-size: 0.75rem;
+            }
+
+            .content-wrapper {
+                max-width: 100%;
+                padding: 0 0.5rem;
+            }
+
+            .year-badge {
+                padding: 0.4rem 1rem;
+                font-size: 0.75rem;
+                margin-bottom: 1rem;
+            }
+
+            .main-title {
+                font-size: clamp(1.5rem, 7vw, 2.5rem);
+                margin-bottom: 1rem;
+                line-height: 1.3;
+            }
+
+            .subtitle {
+                font-size: clamp(0.875rem, 3.5vw, 1.1rem);
+                line-height: 1.5;
+            }
+
+            .highlight-text {
+                font-size: clamp(2.5rem, 12vw, 5rem);
+            }
+
+            .emoji-large {
+                font-size: clamp(3rem, 15vw, 6rem);
+                margin-bottom: 0.5rem;
+            }
+
+            .stat-card {
+                padding: 1.25rem;
+                margin: 0.75rem 0;
+                border-radius: 16px;
+            }
+
+            .keyword-tag {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+                margin: 0.25rem;
+            }
+
+            .suggestion-card {
+                padding: 1rem;
+                margin: 0.5rem 0;
+                border-radius: 12px;
+            }
+
+            .suggestion-card h4 {
+                font-size: 0.9rem;
+            }
+
+            .suggestion-card p {
+                font-size: 0.8rem;
+            }
+
+            .swipe-hint {
+                bottom: 1.5rem;
+                font-size: 0.75rem;
+            }
+
+            .progress-container {
+                height: 3px;
+            }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 380px) {
+            .slide {
+                padding: 1rem;
+                padding-top: 3rem;
+            }
+
+            .main-title {
+                font-size: clamp(1.25rem, 6vw, 2rem);
+            }
+
+            .subtitle {
+                font-size: 0.85rem;
+            }
+
+            .keyword-tag {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+        }
+
+        /* Landscape mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .slide {
+                padding: 0.75rem 2rem;
+                justify-content: flex-start;
+                padding-top: 2.5rem;
+                overflow-y: auto;
+            }
+
+            .emoji-large {
+                font-size: 3rem;
+                margin-bottom: 0.25rem;
+            }
+
+            .main-title {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .year-badge {
+                margin-bottom: 0.5rem;
+            }
+
+            .stat-card {
+                padding: 0.75rem;
+                margin: 0.5rem 0;
+            }
+
+            .swipe-hint {
+                display: none;
+            }
+        }
+
+        /* Touch friendly */
+        @media (hover: none) {
+            .nav-dots {
+                display: none;
+            }
+        }
+
+        /* Ensure background images cover properly on all devices */
+        .slide {
+            background-size: cover !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container" id="slideContainer">
+        <!-- Slide 1: Welcome -->
+        <div class="slide gradient-1 active" data-slide="0">
+            <div class="slide-number">01 / 12</div>
+            <div class="content-wrapper">
+                <div class="year-badge animate-fade-up">🎧 YOUR 2025 WRAPPED</div>
+                <div class="emoji-large animate-scale animate-float">🌟</div>
+                <h1 class="main-title animate-fade-up-delay-1">2025<br>年度总结</h1>
+                <p class="subtitle animate-fade-up-delay-2" style="font-style: italic;">Inner Peace Edition</p>
+                <p class="subtitle animate-fade-up-delay-3" style="margin-top: 1rem; opacity: 0.8;">
+                    这一年，我不去追逐远方的浪潮<br>
+                    而是在自己的湖泊里<br>
+                    看清了水底的砂石
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 2: 年度主打词 -->
+        <div class="slide gradient-2" data-slide="1">
+            <div class="slide-number">02 / 12</div>
+            <div class="content-wrapper">
+                <div class="year-badge animate-fade-up">年度主打词</div>
+                <h1 class="main-title animate-scale">平静 · 稳定 · 顺遂</h1>
+                <div class="stat-card animate-fade-up-delay-1">
+                    <p class="subtitle">
+                        你成功地将生活的重心从<br>
+                        <strong>「外界的期待」</strong><br>
+                        转移到了<br>
+                        <strong>「自我的舒适」</strong>
+                    </p>
+                </div>
+                <p class="subtitle animate-fade-up-delay-2" style="margin-top: 1rem;">
+                    通过断舍离和社交过滤<br>
+                    你为自己创造了一个<br>
+                    极具安全感的<strong>精神花园</strong> 🌿
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 3: 体能战绩 - 跑步 -->
+        <div class="slide gradient-5" data-slide="2">
+            <div class="slide-number">03 / 12</div>
+            <div class="content-wrapper dark-text">
+                <div class="year-badge animate-fade-up">核心战绩 · 体能</div>
+                <div class="emoji-large animate-scale animate-float">🏃‍♂️</div>
+                <h1 class="main-title animate-fade-up-delay-1">突破 5 公里</h1>
+                <div class="stat-card animate-fade-up-delay-2">
+                    <p class="highlight-text" style="font-size: clamp(3rem, 12vw, 6rem);">6'00"</p>
+                    <p class="subtitle">配速 / 公里</p>
+                </div>
+                <p class="subtitle animate-fade-up-delay-3" style="font-style: italic;">
+                    虽然只有一次<br>
+                    但那是我与身体<strong>达成共识</strong>的瞬间 ✨
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 4: 自律战绩 - 作息 -->
+        <div class="slide gradient-4" data-slide="3">
+            <div class="slide-number">04 / 12</div>
+            <div class="content-wrapper dark-text">
+                <div class="year-badge animate-fade-up">核心战绩 · 自律</div>
+                <h1 class="main-title animate-scale">作息大师</h1>
+                <div class="stat-card animate-fade-up-delay-1">
+                    <p class="highlight-text" style="font-size: clamp(1.8rem, 6vw, 3rem);">22:00 → 07:00</p>
+                    <p class="subtitle">击败了全国 99% 的大学生</p>
+                </div>
+                <p class="subtitle animate-fade-up-delay-2" style="margin-top: 1rem;">
+                    在早晨的空气里<br>
+                    我找到了<strong>掌控感</strong> 🌅
+                </p>
+                <div class="suggestion-card animate-fade-up-delay-3" style="text-align: center; margin-top: 1rem;">
+                    <p style="margin: 0;">🍳 深夜食堂：大部分晚餐回归家庭厨房<br>在烟火气中治愈一天的疲惫</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: 精神图谱 - 阅读 -->
+        <div class="slide gradient-3" data-slide="4">
+            <div class="slide-number">05 / 12</div>
+            <div class="content-wrapper">
+                <div class="year-badge animate-fade-up">精神图谱 · 深度探索者</div>
+                <div class="emoji-large animate-scale animate-pulse">📚</div>
+                <h1 class="main-title animate-fade-up-delay-1">年度书单</h1>
+                <div class="animate-fade-up-delay-2">
+                    <span class="keyword-tag">《蛤蟆先生去看心理医生》</span>
+                    <span class="keyword-tag">《被讨厌的勇气》</span>
+                </div>
+                <p class="subtitle animate-fade-up-delay-3" style="margin-top: 1.5rem; font-style: italic;">
+                    它们是我人生的<br>
+                    <strong>「心理说明书」</strong> 💭
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 6: 精神图谱 - 通识 -->
+        <div class="slide gradient-6" data-slide="5">
+            <div class="slide-number">06 / 12</div>
+            <div class="content-wrapper dark-text">
+                <div class="year-badge animate-fade-up">精神图谱 · 通识成瘾</div>
+                <h1 class="main-title animate-scale">从「向外求」<br>到「向内看」</h1>
+                <div class="animate-fade-up-delay-1" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin: 1.5rem 0;">
+                    <span class="keyword-tag">🎧 听播客</span>
+                    <span class="keyword-tag">🎬 看纪录片</span>
+                    <span class="keyword-tag">🔍 观察世界规律</span>
+                </div>
+                <div class="stat-card animate-fade-up-delay-2">
+                    <p class="subtitle">
+                        我发现：<br>
+                        比起寻找<strong>「另一半」</strong><br>
+                        寻找<strong>「真实的世界」</strong><br>
+                        更让我心动 💫
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: 空间断舍离 -->
+        <div class="slide gradient-7" data-slide="6">
+            <div class="slide-number">07 / 12</div>
+            <div class="content-wrapper dark-text">
+                <div class="year-badge animate-fade-up">空间与社交 · 断舍离</div>
+                <div class="emoji-large animate-scale animate-float">🧹</div>
+                <h1 class="main-title animate-fade-up-delay-1">极简生活</h1>
+                <div class="suggestion-card animate-fade-up-delay-2">
+                    <h4>📦 物理空间</h4>
+                    <p>丢弃了冗余的杂物，换回了生活的秩序</p>
+                </div>
+                <div class="suggestion-card animate-fade-up-delay-3">
+                    <h4>👥 社交半径</h4>
+                    <p>减少了无效社交，不再害怕一个人</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: 认知反转 -->
+        <div class="slide gradient-8" data-slide="7">
+            <div class="slide-number">08 / 12</div>
+            <div class="content-wrapper dark-text">
+                <div class="year-badge animate-fade-up">思维升级</div>
+                <h1 class="main-title animate-scale" style="font-size: clamp(1.5rem, 5vw, 2.5rem);">认知反转</h1>
+                <div class="stat-card animate-fade-up-delay-1">
+                    <p class="subtitle" style="font-size: clamp(0.9rem, 2.5vw, 1.1rem);">
+                        以前觉得热闹是好<br><br>
+                        现在发现：<br>
+                        能和几个舒适的朋友相处<br>
+                        暗自庆幸不用陷入争吵的泥潭<br>
+                        <strong>也是一种顶级的幸福</strong> ✨
+                    </p>
+                </div>
+                <p class="subtitle animate-fade-up-delay-2" style="margin-top: 1rem; font-style: italic;">
+                    学会了「苦中作乐」<br>
+                    坏事的发生，不过是<br>
+                    生活在给我<strong>免费上课</strong> 📝
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 9: 2026 展望 -->
+        <div class="slide gradient-6" data-slide="8">
+            <div class="slide-number">09 / 12</div>
+            <div class="content-wrapper dark-text">
+                <div class="year-badge animate-fade-up">给 2026 的寄语</div>
+                <p class="highlight-text animate-scale">2026</p>
+                <div class="animate-fade-up-delay-1" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin: 1.5rem 0;">
+                    <span class="keyword-tag" style="font-size: 1.25rem;">🔄 多变</span>
+                    <span class="keyword-tag" style="font-size: 1.25rem;">💖 幸福</span>
+                    <span class="keyword-tag" style="font-size: 1.25rem;">🕊️ 安宁</span>
+                </div>
+                <p class="subtitle animate-fade-up-delay-2" style="font-style: italic;">
+                    "要把 2025 积攒的平静带走<br>
+                    把那些执着和紧绷留在过去<br>
+                    2026，我准备好去迎接<br>
+                    一些<strong>「多变」的惊喜</strong>了"
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 10: 建议 Part 1 -->
+        <div class="slide gradient-10" data-slide="9">
+            <div class="slide-number">10 / 12</div>
+            <div class="content-wrapper dark-text">
+                <div class="year-badge animate-fade-up">给你的建议</div>
+                <h1 class="main-title animate-fade-up" style="font-size: clamp(1.5rem, 5vw, 2.5rem);">拥抱「多变」的小技巧</h1>
+                
+                <div class="suggestion-card animate-fade-up-delay-1">
+                    <h4>💬 微量社交</h4>
+                    <p>不需要融入新圈子，只需在遇到新同学时多问一个问题。把沟通当作一种「通识实验」，去听听远方的故事。</p>
+                </div>
+                
+                <div class="suggestion-card animate-fade-up-delay-2">
+                    <h4>💻 用「玩」的心态学编程</h4>
+                    <p>把编程看作「创造规则」的过程。试着做一个属于你自己的、无意义但有趣的小工具。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: 建议 Part 2 -->
+        <div class="slide gradient-11" data-slide="10">
+            <div class="slide-number">11 / 12</div>
+            <div class="content-wrapper dark-text">
+                <div class="year-badge animate-fade-up">给你的建议</div>
+                <h1 class="main-title animate-fade-up" style="font-size: clamp(1.5rem, 5vw, 2.5rem);">保持「安宁」的秘诀</h1>
+                
+                <div class="suggestion-card animate-fade-up-delay-1">
+                    <h4>🏃 保持运动频率</h4>
+                    <p>不要把运动当任务。忙碌时 15 分钟快走也很好。保持「频率」比保持「强度」更重要。</p>
+                </div>
+                
+                <div class="suggestion-card animate-fade-up-delay-2">
+                    <h4>🍳 把厨艺列入通识学习</h4>
+                    <p>每周尝试一个新菜谱，这本身也是一种「多变」的体现。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Ending -->
+        <div class="slide gradient-12" data-slide="11">
+            <div class="slide-number">12 / 12</div>
+            <div class="content-wrapper dark-text">
+                <div class="year-badge animate-fade-up">最后的话</div>
+                <div class="emoji-large animate-scale animate-float">🌈</div>
+                <h1 class="main-title animate-fade-up-delay-1" style="font-size: clamp(1.1rem, 3.5vw, 1.8rem); line-height: 1.8;">
+                    「坏事的发生<br>往往是为了教会我们<br>一些生活的东西」
+                </h1>
+                <div class="stat-card animate-fade-up-delay-2">
+                    <p class="subtitle" style="font-size: clamp(0.85rem, 2.5vw, 1rem);">
+                        这种<strong>「反脆弱」</strong>的思维方式<br>
+                        会让你在 2026 年无论遇到什么<br>
+                        都能稳稳地接住生活<br>
+                        走向你想要的<strong>「安宁」</strong>
+                    </p>
+                </div>
+                <p class="subtitle animate-fade-up-delay-3" style="margin-top: 1.5rem; font-size: 1.5rem; font-weight: 700;">
+                    期待你的 2026 ✨
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Navigation Dots -->
+    <div class="nav-dots" id="navDots"></div>
+
+    <!-- Swipe Hint -->
+    <div class="swipe-hint" id="swipeHint">
+        <span>向上滑动继续</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        class SlideShow {
+            constructor() {
+                this.container = document.getElementById('slideContainer');
+                this.slides = document.querySelectorAll('.slide');
+                this.progressBar = document.getElementById('progressBar');
+                this.navDots = document.getElementById('navDots');
+                this.swipeHint = document.getElementById('swipeHint');
+                this.currentSlide = 0;
+                this.totalSlides = this.slides.length;
+                this.isAnimating = false;
+                this.touchStartY = 0;
+                this.touchEndY = 0;
+
+                this.init();
+            }
+
+            init() {
+                this.createNavDots();
+                this.updateProgress();
+                this.bindEvents();
+            }
+
+            createNavDots() {
+                for (let i = 0; i < this.totalSlides; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = `nav-dot ${i === 0 ? 'active' : ''}`;
+                    dot.addEventListener('click', () => this.goToSlide(i));
+                    this.navDots.appendChild(dot);
+                }
+            }
+
+            updateProgress() {
+                const progress = ((this.currentSlide + 1) / this.totalSlides) * 100;
+                this.progressBar.style.width = `${progress}%`;
+
+                // Update nav dots
+                document.querySelectorAll('.nav-dot').forEach((dot, index) => {
+                    dot.classList.toggle('active', index === this.currentSlide);
+                });
+
+                // Hide swipe hint on last slide
+                this.swipeHint.style.opacity = this.currentSlide === this.totalSlides - 1 ? '0' : '0.7';
+            }
+
+            goToSlide(index, direction = null) {
+                if (this.isAnimating || index === this.currentSlide) return;
+                if (index < 0 || index >= this.totalSlides) return;
+
+                this.isAnimating = true;
+
+                const currentSlideEl = this.slides[this.currentSlide];
+                const nextSlideEl = this.slides[index];
+
+                // Determine direction
+                const goingUp = direction === 'up' || (direction === null && index > this.currentSlide);
+
+                // Exit animation for current slide
+                currentSlideEl.classList.remove('active');
+                currentSlideEl.classList.add(goingUp ? 'exit-up' : 'exit-down');
+
+                // Prepare next slide
+                nextSlideEl.style.transform = goingUp ? 'translateY(100%) scale(0.8)' : 'translateY(-100%) scale(0.8)';
+                nextSlideEl.classList.add('active');
+
+                // Force reflow
+                nextSlideEl.offsetHeight;
+
+                // Animate next slide in
+                nextSlideEl.style.transform = '';
+
+                this.currentSlide = index;
+                this.updateProgress();
+
+                // Cleanup
+                setTimeout(() => {
+                    currentSlideEl.classList.remove('exit-up', 'exit-down');
+                    this.isAnimating = false;
+                }, 800);
+            }
+
+            nextSlide() {
+                if (this.currentSlide < this.totalSlides - 1) {
+                    this.goToSlide(this.currentSlide + 1, 'up');
+                }
+            }
+
+            prevSlide() {
+                if (this.currentSlide > 0) {
+                    this.goToSlide(this.currentSlide - 1, 'down');
+                }
+            }
+
+            bindEvents() {
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowDown' || e.key === ' ' || e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        this.nextSlide();
+                    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        this.prevSlide();
+                    }
+                });
+
+                // Mouse wheel
+                let wheelTimeout;
+                document.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    clearTimeout(wheelTimeout);
+                    wheelTimeout = setTimeout(() => {
+                        if (e.deltaY > 0) {
+                            this.nextSlide();
+                        } else {
+                            this.prevSlide();
+                        }
+                    }, 50);
+                }, { passive: false });
+
+                // Touch events
+                document.addEventListener('touchstart', (e) => {
+                    this.touchStartY = e.changedTouches[0].screenY;
+                }, { passive: true });
+
+                document.addEventListener('touchend', (e) => {
+                    this.touchEndY = e.changedTouches[0].screenY;
+                    this.handleSwipe();
+                }, { passive: true });
+
+                // Click to advance (on mobile)
+                this.container.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 768) {
+                        const clickX = e.clientX;
+                        const screenWidth = window.innerWidth;
+                        
+                        if (clickX > screenWidth * 0.7) {
+                            this.nextSlide();
+                        } else if (clickX < screenWidth * 0.3) {
+                            this.prevSlide();
+                        }
+                    }
+                });
+            }
+
+            handleSwipe() {
+                const swipeThreshold = 50;
+                const diff = this.touchStartY - this.touchEndY;
+
+                if (Math.abs(diff) > swipeThreshold) {
+                    if (diff > 0) {
+                        this.nextSlide();
+                    } else {
+                        this.prevSlide();
+                    }
+                }
+            }
+        }
+
+        // Initialize slideshow
+        document.addEventListener('DOMContentLoaded', () => {
+            new SlideShow();
+        });
+    </script>
+</body>
+</html>
